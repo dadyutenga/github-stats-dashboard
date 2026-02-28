@@ -1,7 +1,9 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+	"log"
 	"os"
 	"os/signal"
 	"syscall"
@@ -10,9 +12,14 @@ import (
 	"github-stats-dashboard/api"
 	"github-stats-dashboard/config"
 	"github-stats-dashboard/renderer"
+	"github-stats-dashboard/web"
 )
 
 func main() {
+	webMode := flag.Bool("web", false, "Run as a web server instead of terminal UI")
+	webAddr := flag.String("addr", ":8080", "Address for the web server (e.g. :8080)")
+	flag.Parse()
+
 	cfg := config.Load()
 	if cfg.Token == "" {
 		fmt.Println("Error: GITHUB_TOKEN environment variable not set.")
@@ -21,6 +28,12 @@ func main() {
 	}
 
 	client := api.NewClient(cfg.Token, cfg.Username)
+
+	if *webMode {
+		srv := web.NewServer(client)
+		log.Fatal(srv.Start(*webAddr))
+		return
+	}
 
 	// Handle Ctrl+C gracefully
 	sig := make(chan os.Signal, 1)

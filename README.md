@@ -88,15 +88,34 @@ go run .
 
 ```
 github-stats-dashboard/
-├── main.go              # Entry point, refresh loop
+├── main.go              # Entry point, refresh loop, --web flag
 ├── go.mod               # No external deps!
 ├── config/
 │   └── config.go        # Env var loading
 ├── api/
 │   └── client.go        # GitHub REST API calls
-└── renderer/
-    └── renderer.go      # ANSI terminal rendering
+├── renderer/
+│   └── renderer.go      # ANSI terminal rendering
+└── web/
+    └── web.go           # Web dashboard (HTML server)
 ```
+
+### 4. Web Mode (optional)
+
+Run the dashboard as a local web page instead of a terminal UI:
+
+```bash
+go run . --web
+```
+
+Then open [http://localhost:8080](http://localhost:8080) in your browser.
+
+To use a custom port:
+```bash
+go run . --web --addr :3000
+```
+
+The web dashboard auto-refreshes every 60 seconds and shows the same stats as the terminal version.
 
 ## Features
 
@@ -105,6 +124,8 @@ github-stats-dashboard/
 - **Streak tracking** — consecutive days with commits
 - **Top repos** — ranked by this month's commits, today's highlighted in green
 - **Auto-refresh** — every 60 seconds
+- **Terminal mode** — ANSI-colored terminal dashboard (default)
+- **Web mode** — browser-based dashboard with `--web` flag
 - **Clean exit** — Ctrl+C restores cursor and clears screen
 
 ## Notes
