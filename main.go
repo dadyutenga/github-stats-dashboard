@@ -56,9 +56,9 @@ func main() {
 			renderer.Render(stats)
 		}
 
-		// Wait 60s but allow early exit
+		// Wait custom seconds but allow early exit
 		select {
-		case <-time.After(60 * time.Second):
+		case <-time.After(time.Duration(cfg.RefreshSeconds) * time.Second):
 		}
 	}
 }
