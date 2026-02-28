@@ -89,7 +89,7 @@ type dashData struct {
 	TodayCommits int
 	MonthCommits int
 	Streak       int
-	StreakLabel   string
+	StreakLabel  string
 	Graph        []graphDay
 	TopRepos     []repoRow
 }
